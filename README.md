@@ -13,6 +13,6 @@ SSAFY 과정 동안 매일 학습한 내용을 기록하는 저장소입니다.
 
 ## 📚 학습 기록
 
-### Day01
+### [Day01](./Day01/README.md)
 - [학습 정리](./Day01/README.md)
 - [복습용 빈칸 노트](./Day01/review.md)
