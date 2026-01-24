@@ -1,18 +1,34 @@
-# SSAFY TIL (Today I Learned)
+# 📚 SSAFY TIL
 
-SSAFY 과정 동안 매일 학습한 내용을 기록하는 저장소입니다.
+> SSAFY 과정 학습 기록 및 복습 관리 저장소
 
-- Python
-- Algorithm
-- Git
-- Linux
-- Web
-- Django
+---
 
-하루하루 성장 과정을 기록합니다.
+## 📌 학습 목표
 
-## 📚 학습 기록
+* 매일 학습 내용을 **체계적으로 정리**
+* **복습용 빈칸 노트**를 통해 장기 기억 강화
+* GitHub 잔디 관리 + **포트폴리오화**
+
+---
+
+## 📂 학습 기록
 
 ### Day01
-- [학습 정리](./Day01/README.md)
-- [복습용 빈칸 노트](./Day01/review.md)
+
+* [학습 정리](./Day01/README.md)
+* [복습 노트](./Day01/review.md)
+
+### Day02
+
+* [학습 정리](./Day02/README.md)
+* [복습 노트](./Day02/review.md)
+
+---
+
+## 🧭 문서 이동 가이드
+
+* 각 Day README 하단 → **복습 노트 + 메인 이동 가능**
+* 각 review 하단 → **학습 정리 + 메인 이동 가능**
+
+---
