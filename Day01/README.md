@@ -179,5 +179,8 @@ print(id(x))
 
 ---
 
-→ [복습용 빈칸 노트 바로가기](./review.md)
-← [메인으로 돌아가기](../README.md)  
+
+### 🔗 이동
+
+- 📝 복습 노트: [review.md](./review.md)
+- ⬆ 메인: [README](../README.md)
