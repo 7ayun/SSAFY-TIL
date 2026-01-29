@@ -9,12 +9,6 @@
 1. 상속은 기존 클래스의 ______을 재사용하기 위한 구조이다.
 2. 부모 클래스 → ______ 클래스
 
-<details>
-<summary>정답</summary>
-
-1. 기능
-2. 자식
-</details>
 
 ---
 
@@ -23,12 +17,6 @@
 1. super()는 ______ 기준으로 다음 클래스를 호출한다.
 2. super()는 ______를 직접 호출하지 않는다.
 
-<details>
-<summary>정답</summary>
-
-1. MRO
-2. 부모 클래스
-</details>
 
 ---
 
@@ -44,12 +32,6 @@ class D(B, C): pass
 1. `D.mro()`의 두 번째 요소는 ______이다.
 2. 전체 순서: D → ______ → ______ → A
 
-<details>
-<summary>정답</summary>
-
-1. B
-2. B, C
-</details>
 
 ---
 
@@ -84,14 +66,6 @@ D().show()
 3. ______
 4. ______
 
-<details>
-<summary>정답</summary>
-
-A
-C
-B
-D
-</details>
 
 ---
 
@@ -100,12 +74,6 @@ D
 1. 문법 자체 오류 → ______
 2. 실행 중 발생 → ______
 
-<details>
-<summary>정답</summary>
-
-1. Error
-2. Exception
-</details>
 
 ---
 
@@ -124,11 +92,6 @@ finally:
 
 빈칸에 들어갈 키워드: ______
 
-<details>
-<summary>정답</summary>
-
-Exception
-</details>
 
 ---
 
@@ -137,16 +100,9 @@ Exception
 1. super()를 ______ 호출로 해석하면 틀린다.
 2. MRO는 항상 ______ 기준으로 해석한다.
 
-<details>
-<summary>정답</summary>
-
-1. 부모
-2. 호출 클래스
-</details>
 
 ---
 
 ### 이동
 👉 [학습 정리](./README.md)
 👉 [메인 README](../README.md)
-
