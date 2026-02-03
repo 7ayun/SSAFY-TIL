@@ -183,5 +183,5 @@ for tc in range(1, T + 1):
 
 ---
 
-- 📌 **복습노트로 이동:** `./review.md`
-- 📌 **메인 README로 이동:** `../README.md`
+- 📌 **복습노트로 이동:** `./01/review.md`
+- 📌 **메인 README로 이동:** `../01/README.md`

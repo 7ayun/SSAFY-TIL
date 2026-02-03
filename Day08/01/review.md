@@ -159,5 +159,5 @@ arr = list(map(_____, input()._____()))
 
 ---
 
-- 📌 **학습정리로 이동:** `./README.md`
-- 📌 **메인 README로 이동:** `../README.md`
+- 📌 **학습정리로 이동:** `./01/README.md`
+- 📌 **메인 README로 이동:** `../01/README.md`

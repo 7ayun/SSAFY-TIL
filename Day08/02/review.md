@@ -79,5 +79,5 @@
 
 ---
 
-- 📌 **학습정리로 이동:** `./README.md`
-- 📌 **메인 README로 이동:** `../README.md`
+- 📌 **학습정리로 이동:** `./02/README.md`
+- 📌 **메인 README로 이동:** `../02/README.md`
