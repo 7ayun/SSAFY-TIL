@@ -61,6 +61,11 @@
 * [학습 정리](./Day09/README.md)
 * [복습 노트](./Day09/review.md)
 
+### Day10
+
+* [학습 정리](./Day10/README.md)
+* [복습 노트](./Day10/review.md)
+
 ---
 
 ## 🧭 문서 이동 가이드
