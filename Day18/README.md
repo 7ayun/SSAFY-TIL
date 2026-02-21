@@ -1,4 +1,4 @@
-# 조합(Combination) 수업 정리 + 코드 주석
+# 조합(Combination) 수업 정리
 
 ## 1) 오늘 강의 핵심 요약
 
