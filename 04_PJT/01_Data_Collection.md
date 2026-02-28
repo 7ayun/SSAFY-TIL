@@ -1,200 +1,75 @@
-# Day07 — Git 복구 전략 · 파일 시스템(pathlib) · 파일 입출력 · 생성형 AI 활용
+# [PJT] 데이터 수집 및 관리 (Data Collection & Management)
 
-> **학습 목표**
-> - Git에서 되돌리기 전략(revert / reset)의 차이를 이해한다.
-> - `pathlib`으로 파일 시스템을 객체처럼 다룬다.
-> - 파일 생성·읽기·쓰기·탐색을 안전하게 수행한다.
-> - 파일 처리 결과를 생성형 AI(API)와 연결하는 전체 흐름을 이해한다.
+> **핵심 키워드:** #Git_Advanced #Pathlib #File_System #Revert #Reset #Markdown_Collection
 
 ---
 
-## 1. 오늘의 핵심 요약
-- `git revert`는 **기록을 남기며 취소**, `git reset`은 **과거로 이동**한다.
-- `reset`은 옵션(soft/mixed/hard)에 따라 코드 보존 수준이 달라진다.
-- `pathlib`은 **경로를 문자열이 아닌 객체**로 다룬다.
-- `with open()`은 파일을 **안전하게 열고 닫는 표준 패턴**이다.
-- 파일 처리 결과를 모아 **OpenAI API로 요약 자동화**가 가능하다.
+## 🎯 학습 목표
+* Git의 고급 복구 기술(Revert, Reset, Restore, RM) 습득 및 저장소 관리 역량 강화
+* Python 표준 라이브러리 `pathlib`을 활용한 객체 지향적 파일 시스템 제어 숙달
+* 인코딩(UTF-8)의 개념 이해 및 다양한 운영체제 환경에서의 파일 입출력 처리 능력 배양
 
 ---
 
-## 2. 개념 구조 정리
+## 💡 주요 개념 정리
 
-```
-개발 도구 & 파일 시스템
-├─ Git 관리 기술
-│   ├─ revert (기록 남김)
-│   └─ reset
-│       ├─ soft
-│       ├─ mixed (기본)
-│       └─ hard
-│
-├─ 파일 시스템 (Python)
-│   ├─ pathlib.Path
-│   ├─ 경로 결합 / 탐색
-│   ├─ 파일/폴더 생성
-│   └─ 파일 읽기/쓰기
-│
-└─ 응용
-    ├─ 파일 요약 파이프라인
-    └─ OpenAI API 연동
-```
+### 1. Git 버전 관리 심화 기술
+* **리버트(Revert):** 기존 커밋 기록을 보존한 채 특정 시점의 작업 내역만 취소하는 신규 커밋 생성
+* **리셋(Reset):** 저장소 상태를 과거 시점으로 완전히 되돌리는 롤백 기능 (Soft, Mixed, Hard 옵션에 따른 보존 범위 차이)
+* **리스토어(Restore):** 워킹 디렉토리 또는 스테이징 에어리어의 변경 사항을 이전 상태로 복구
+* **RM:** Git의 추적(Tracking) 중단 및 파일 삭제 기능 (`--cached` 옵션을 통한 `.gitignore` 미반영 파일 해결)
+
+### 2. 파일 시스템 관리 (Pathlib)
+* **객체 지향적 경로:** 문자열 기반 경로 처리의 번거로움을 해결하기 위해 경로 자체를 하나의 객체(Path)로 관리
+* **주요 속성:** 파일 전체 이름(`name`), 확장자 제외 이름(`stem`), 확장자(`suffix`)의 직관적 추출
+* **플랫폼 독립성:** 슬래시(/) 연산자를 활용하여 윈도우와 맥/리눅스 간 경로 구분자 차이 자동 해결
 
 ---
 
-## 3. Git 복구 전략 핵심
+## 💻 기능 구현 및 코드 실습
 
-### 3-1. git revert
-
-> **특정 커밋의 작업을 없던 일로 만들되, 새로운 커밋으로 기록을 남김**
+### 1. Git 실수 복구 및 추적 제어
+버전 관리 과정에서의 오류 수정 및 파일 제외 설정 기법
 
 ```bash
-git revert <commit-id>
+# 특정 커밋의 작업 내역 취소 (기록 보존)
+git revert <commit_id>
+
+# 스테이징된 파일 다시 내리기
+git restore --staged <file_name>
+
+# 이미 커밋된 파일을 추적 대상에서 제외 (.gitignore 적용 시 필수)
+git rm --cached <file_name>
+
+# 리셋으로 소실된 커밋 기록 조회 및 복구
+git reflog
+git reset --hard <commit_id>
 ```
 
-- 협업 환경에서 **권장**
-- 히스토리 보존
-
----
-
-### 3-2. git reset
-
-> **과거 커밋 시점으로 HEAD 이동**
-
-```bash
-git reset <옵션> <commit-id>
-```
-
-| 옵션 | 코드 상태 |
-|------|-----------|
-| soft | 스테이징에 남김 |
-| mixed | 워킹 디렉토리에 남김 |
-| hard | 완전 삭제 |
-
-⚠️ `hard`는 복구 불가 → 단독 작업에서만 사용
-
----
-
-## 4. pathlib 개요 (왜 필요한가)
-
-### 4-1. 문제점
-- 경로를 문자열로 다루면 `split`, `join` 난무
-
-### 4-2. 해결
+### 2. Pathlib 활용 데이터 탐색 및 입출력
+객체 기반 파일 시스템 조작을 통한 효율적인 데이터 수집 로직
 
 ```python
 from pathlib import Path
 
-p = Path.cwd()        # 현재 경로
-home = Path.home()    # 홈 디렉토리
-```
+# 1. 현재 작업 경로 확인 및 폴더 생성
+current_path = Path.cwd()
+new_dir = current_path / "data"
+new_dir.mkdir(exist_ok=True)  # 폴더 존재 시 에러 방지
 
-➡ 경로 자체를 **객체**로 관리
+# 2. 와일드카드를 활용한 특정 파일 일괄 탐색 (Data Collection)
+# 현재 폴더 내의 모든 Markdown 파일 수집
+md_files = list(current_path.glob("*.md"))
 
----
-
-## 5. 경로 객체 주요 속성
-
-```python
-file = Path('docs/file.txt')
-```
-
-| 속성 | 의미 |
-|------|------|
-| file.name | 파일명 + 확장자 |
-| file.stem | 파일명 |
-| file.suffix | 확장자 |
-
----
-
-## 6. 파일 · 폴더 생성
-
-```python
-new_dir = Path('new_directory')
-new_dir.mkdir(exist_ok=True)
-```
-
-```python
-(new_dir / 'new.txt').write_text('내용', encoding='utf-8')
-```
-
-- 상대 경로 기준
-- `exist_ok=True` → 에러 방지
-
----
-
-## 7. 파일 읽기 & with 문
-
-```python
-with open('new.txt', 'a', encoding='utf-8') as f:
-    f.write('추가 내용')
-```
-
-- `with` → 자동 close
-- `a` : append / `r` : read / `w` : write
-
----
-
-## 8. 파일 탐색 (iterdir / glob)
-
-```python
-for item in Path.cwd().iterdir():
-    print(item)
-```
-
-```python
-Path.cwd().glob('*.py')      # 현재 폴더
-Path.cwd().rglob('*.py')     # 하위 폴더 포함
-```
-
-- 반환값은 **이터레이터** (지연 평가)
-
----
-
-## 9. 인코딩 (UTF-8)
-
-- 한글 깨짐 방지 필수
-- UTF-8 = 국제 표준 유니코드
-
-```python
-open('file.txt', encoding='utf-8')
+# 3. 파일 안전하게 쓰기 (UTF-8 인코딩 준수)
+file_path = new_dir / "summary.txt"
+file_path.write_text("Hello Python", encoding="utf-8")
 ```
 
 ---
 
-## 10. 응용: 생성형 AI 요약 파이프라인
-
-1. 파일 경로 탐색
-2. 파일 내용 읽기
-3. 텍스트 결합
-4. OpenAI API 요청
-5. 요약 결과를 md 파일로 저장
-
-➡ **Day07은 전체 파이프라인 사고 훈련용**
-
----
-
-## 11. 실수 & 시험 감점 포인트
-
-| 실수 | 결과 |
-|------|------|
-| revert vs reset 혼동 | 히스토리 파괴 |
-| hard 무분별 사용 | 복구 불가 |
-| 인코딩 누락 | 한글 깨짐 |
-| iterdir 바로 출력 | 제너레이터 출력 |
-
----
-
-## 12. 5분 요약
-
-- revert = 기록 남김 취소
-- reset = 과거 이동
-- pathlib = 경로 객체화
-- with = 안전한 파일 처리
-- 파일 → AI → 자동 요약
-
----
-
-### 이동
-👉 [복습 노트](./review.md)
-👉 [메인 README](../README.md)
-
+## 🚀 복습 및 AI 인사이트
+* **인코딩의 중요성:** 한글 등 멀티바이트 문자 처리 시 `utf-8` 옵션을 명시하여 환경 간 문자 깨짐 현상 방지 필수
+* **게으른 평가 (Lazy Evaluation):** `iterdir()` 또는 `glob()` 호출 시 결과가 제너레이터로 반환되어 실제 사용 시점까지 연산이 지연되는 효율적 메모리 관리 구조
+* **안전한 파일 열기:** `with` 구문(Context Manager) 활용을 통한 리소스 자동 해제 및 파일 파손 방지 설계 지향
+* **수집 전략:** 대규모 프로젝트 내 산재한 TIL 파일 등을 자동 수집하기 위해 `rglob` (재귀적 탐색) 메서드 활용 권장
