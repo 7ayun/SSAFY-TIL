@@ -1,130 +1,43 @@
-# 📚 SSAFY TIL
+# 🚀 SSAFY-TIL (Today I Learned)
 
-> SSAFY 과정 학습 기록 및 복습 관리 저장소
-
----
-
-## 📌 학습 목표
-
-* 매일 학습 내용을 **체계적으로 정리**
-* **복습용 빈칸 노트**를 통해 장기 기억 강화
-* GitHub 잔디 관리 + **포트폴리오화**
+삼성 청년 SW 아카데미(SSAFY) 기술 스택 및 프로젝트 기록 저장소
 
 ---
 
-## 📂 학습 기록
+## 📂 저장소 디렉토리 구조
 
-### Day01
+### 01. Python
+* 파이썬 기초 문법 및 객체 지향 프로그래밍(OOP) 실습
+* 효율적인 로직 구성을 위한 데이터 처리 연습
 
-* [학습 정리](./Day01/README.md)
-* [복습 노트](./Day01/review.md)
+### 02. Algorithm
+* 알고리즘 핵심 이론 및 문제 풀이 논리 기록
+* 구조적 사고 기반의 문제 해결 전략 수립
 
-### Day02
+### 03. Web
+* HTML/CSS 및 반응형 웹 디자인 구현
+* Bootstrap 기반 UI 레이아웃 설계 및 실습
 
-* [학습 정리](./Day02/README.md)
-* [복습 노트](./Day02/review.md)
+### 04. PJT
+* 관통 프로젝트 수행 일지 및 기술 문서 관리
+* 요구사항 분석 및 시스템 아키텍처 설계 산출물
 
-### Day03
-
-* [학습 정리](./Day03/README.md)
-* [복습 노트](./Day03/review.md)
-
-### Day04
-
-* [학습 정리](./Day04/README.md)
-* [복습 노트](./Day04/review.md)
-
-### Day05
-
-* [학습 정리](./Day05/README.md)
-* [복습 노트](./Day05/review.md)
-
-### Day06
-
-* [학습 정리](./Day06/README.md)
-* [복습 노트](./Day06/review.md)
-
-### Day07
-
-* [학습 정리](./Day07/README.md)
-* [복습 노트](./Day07/review.md)
-
-### Day08
-
-* [학습 정리](./Day08/01/README.md)
-* [복습 노트](./Day08/01/review.md)
-* [학습 정리](./Day08/02/README.md)
-* [복습 노트](./Day08/02/review.md)
-
-### Day09
-
-* [학습 정리](./Day09/README.md)
-* [복습 노트](./Day09/review.md)
-
-### Day10
-
-* [학습 정리](./Day10/README.md)
-* [복습 노트](./Day10/review.md)
-
-### Day11
-
-* [학습 정리](./Day11/README.md)
-* [복습 노트](./Day11/review.md)
-
-### Day12
-
-* [학습 정리](./Day12/README.md)
-* [복습 노트](./Day12/review.md)
-
-### Day13
-
-* [학습 정리](./Day13/README.md)
-
-### Day14
-
-* [학습 정리](./Day14/README.md)
-
-### Day15
-
-* [학습 정리](./Day15/README.md)
-
-### Day16
-
-* [학습 정리](./Day16/README.md)
-
-### Day17
-
-* [학습 정리](./Day17/README.md)
-
-### Day18
-
-* [학습 정리](./Day18/README.md)
-
-### Day19
-
-* [학습 정리](./Day19/README.md)
-
-### Day20
-
-* [학습 정리](./Day20/README.md)
-
-### Day21
-
-* [학습 정리](./Day21/README.md)
-
-### Day22
-
-* [학습 정리](./Day22/README.md)
-
-### Day23
-
-* [학습 정리](./Day23/README.md)
+### 05. AI Special
+* **AI 엔지니어링:** LLM 작동 원리 및 SDLC 패러다임 변화 분석
+* **워크플로우 설계:** '계-생-검' 체계 기반 에이전트 협업 루프 구축
+* **에이전트 제어:** 전역 지침(Instructions) 활용 IDE 최적화
+* **오케스트레이션:** 랭플로우(Langflow) 활용 시스템 설계
 
 ---
 
-## 🧭 문서 이동 가이드
-
-* 각 Day README 하단 → **복습 노트 + 메인 이동 가능**
-* 각 review 하단 → **학습 정리 + 메인 이동 가능**
+## 🛠️ 개발 환경 및 도구
+* **Editor:** Visual Studio Code, PyCharm
+* **Language:** Python
+* **Framework/Lib:** Bootstrap
+* **AI Tooling:** GitHub Copilot, Langflow
 
 ---
+
+## 📑 TIL 운영 원칙
+* **기록의 구조화:** 핵심 개념 명사형 요약 및 즉각적 코드화 수행
+* **AI 역량 고도화:** 단순 생성을 넘어 에이전트 통제 및 시스템 설계 역량 내재화
