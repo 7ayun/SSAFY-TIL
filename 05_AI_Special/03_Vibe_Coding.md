@@ -1,4 +1,4 @@
-# [AI_Special] 바이브 코딩
+# [AI_Special] 바이브 코딩(Vibe Coding)
 
 > **핵심 키워드:** #Vibe_Coding #GitHub_Copilot #Agent_Control #Session_Separation #Git_Diff
 
