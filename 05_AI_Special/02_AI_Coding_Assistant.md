@@ -1,4 +1,4 @@
-# [AI_Special] AI 코딩 어시스턴트 실습
+# [AI_Special] AI 코딩 어시스턴트 실습 
 
 > **핵심 키워드:** #AI_Coding_Assistant #Role_Partitioning #Prompt_Engineering #TypingMind #Orchestrator
 
