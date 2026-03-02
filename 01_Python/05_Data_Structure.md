@@ -1,442 +1,519 @@
-# [Python] 데이터 구조 (Data Structure)
-> **핵심 키워드:** #Python #데이터구조 #문자열메서드 #리스트메서드 #딕셔너리메서드 #세트메서드 #해시테이블 #얕은복사 #깊은복사
+# [Python] 데이터 구조 — 문자열·리스트·딕셔너리·세트 메서드, 복사, 해시 테이블
+
+> **핵심 키워드:** #메서드 #문자열메서드 #리스트메서드 #딕셔너리 #세트 #가변 #불변 #얕은복사 #깊은복사 #해시테이블 #defaultdict #메서드체이닝
 
 ---
 
-## 🎯 학습 목표
-* 메서드의 정의와 호출 방식 이해 (`객체.메서드()` 형태)
-* 문자열 조회 메서드 `find()` vs `index()` 차이 및 적절한 선택 기준 파악
-* 문자열 조작 핵심 메서드(`replace`, `strip`, `split`, `join`) 활용
-* 리스트 메서드(`append`, `extend`, `insert`, `remove`, `pop`, `sort`) 특성 및 반환값 구분
-* 딕셔너리 메서드(`get`, `keys`, `values`, `items`, `update`, `pop`) 안전한 접근 방법 숙지
-* 세트 메서드 및 집합 연산자 활용
-* 해시 테이블 구조 기반 `dict`/`set` 탐색 속도 우위(O(1)) 이해
-* 얕은 복사(`copy`, `[:]`) vs 깊은 복사(`copy.deepcopy`) 차이 명확히 구분
+## 학습 목표
+
+* 메서드(Method)의 개념을 이해하고, 객체 타입별 메서드 구분
+* 문자열 조회·조작 메서드(find, replace, split, join, strip 등) 활용
+* 리스트 메서드(append, extend, insert, pop, sort 등)와 사용 시 주의점 파악
+* 딕셔너리·세트 메서드를 익히고, 비시퀀스 자료형의 속도 이점 이해
+* 가변/불변과 얕은 복사·깊은 복사의 원리 및 사용 시나리오 구분
+* 해시 테이블의 기본 원리를 통해 딕셔너리·세트가 빠른 이유 이해
 
 ---
 
-## 💡 주요 개념 정리
+## 1. 메서드(Method)
 
-### 1. 메서드(Method)란?
-* **특정 객체에 속한 함수** — 해당 객체의 상태를 조작하거나 동작 수행
-* 호출 방식: `데이터.메서드명(인자)`
-* 파이썬의 모든 데이터(문자열, 리스트, 딕셔너리 등) → 객체(Object)
-* **데이터 타입별 고유한 메서드 존재** → 다른 타입의 메서드 공유 불가
+메서드는 **객체에 속한 함수**다. 파이썬에서는 문자열, 리스트, 딕셔너리 등 모든 데이터가 객체이며, 각 객체 타입마다 고유한 메서드가 존재한다.
 
 ```python
-# 객체.메서드() 호출 기본 구조
-"hello".upper()       # str 객체의 메서드
-.append(4)   # list 객체의 메서드[2][3][1]
+# 문자열 객체의 메서드
+"hello".capitalize()    # 'Hello'
+
+# 리스트 객체의 메서드
+[1, 2, 3].append(4)     # [1, 2, 3, 4]
 ```
 
-> 💡 강사님: *"메서드를 전부 외우는 게 목표가 아니라 '이런 게 있구나'를 인지하는 게 목표. 나중에 필요할 때 검색해서 쓸 수 있으면 충분. 존재조차 모르면 직접 알고리즘으로 구현하는 낭비 발생."*
+호출 형태: `객체.메서드명()`  — 점(`.`)을 찍어 해당 객체가 가진 메서드를 호출한다.
 
 ---
 
-### 2. 자료구조 개요 (CS 기초)
-```
-자료구조(Data Structure)
-├── 단순 구조: 정수, 실수, 문자, 문자열
-├── 선형 구조: 리스트(배열), 연결 리스트, 스택, 큐
-└── 비선형 구조: 트리, 그래프
-```
-* **파이썬 파트**: 정수·실수·문자열·리스트·딕셔너리·세트·튜플 학습
-* **알고리즘 파트**: 연결 리스트·스택·큐·트리·그래프 학습 예정
+## 2. 문자열 메서드
 
----
+### 2-1. 조회·탐색
 
-## 💻 기능 구현 및 코드 실습
-
-### 🔧 문자열 메서드 — 조회 및 탐색
-
-#### `find(x)` vs `index(x)`
-
-| 메서드 | 없을 때 반환 | 사용 케이스 |
-|---|---|---|
-| `find(x)` | `-1` 반환 | 값이 없어도 **무방**한 경우 |
-| `index(x)` | `ValueError` 발생 | 값이 **반드시 존재**해야 하는 경우 |
+| 메서드 | 동작 | 없을 때 |
+|--------|------|---------|
+| `find(x)` | x의 첫 인덱스 반환 | **-1** 반환 |
+| `index(x)` | x의 첫 인덱스 반환 | **에러** 발생 |
 
 ```python
-text = "banana"
-
-# find — 값 없으면 -1 반환, 에러 없음
-print(text.find("a"))   # 1 (첫 번째 위치, 0-indexed)
-print(text.find("z"))   # -1 (없으면 -1 반환)
-print(text.find("an"))  # 1 (문자열도 탐색 가능)
-
-# index — 값 없으면 ValueError 발생
-print(text.index("a"))  # 1
-print(text.index("z"))  # ValueError: substring not found
+text = "hello world"
+text.find("world")     # 6
+text.find("python")    # -1  (에러 없이 안전)
+text.index("world")    # 6
+text.index("python")   # ValueError!
 ```
 
-> 💡 강사님: *"어떤 게 더 좋냐 흑백 논리로 생각하면 안 됨. 상황에 따라 다름. 예: 전화번호부에서 '010'이 반드시 있어야 하는데 없으면 → `index`로 에러 발생시켜 개발자에게 알려야 함. 그냥 `-1` 반환하고 넘어가면 잘못된 데이터가 DB에 쌓이는 스노우볼 사태 발생."*
+### 2-2. 검증
 
-#### 문자열 검증 메서드
+`isupper()`, `islower()`, `isalpha()` — 문자열이 각각 모두 대문자인지, 소문자인지, 알파벳으로만 이루어져 있는지 확인한다. 반환값은 `True`/`False`.
+
+### 2-3. 조작 — 새 문자열 반환
+
+문자열은 **불변(immutable)** 이므로 원본을 직접 바꿀 수 없다. 조작 메서드는 모두 **새로운 문자열을 만들어 반환**한다.
 
 ```python
-s1 = "HELLO"
-s2 = "Hello"
-s3 = "hello"
-
-print(s1.isupper())   # True  — 모두 대문자인지 확인
-print(s3.islower())   # True  — 모두 소문자인지 확인
-print(s2.isupper())   # False — H만 대문자이므로 False
-print(s2.islower())   # False
-
-print("hello".isalpha())   # True  — 알파벳으로만 구성 확인
-print("hello1".isalpha())  # False — 숫자 포함 시 False
+text = "Hello World"
+new_text = text.replace("World", "Python")
+print(text)       # Hello World  ← 원본 그대로
+print(new_text)   # Hello Python ← 새 객체
 ```
 
----
+> **중요:** 문자열 조작 메서드를 쓸 때는 반드시 반환값을 변수에 **재할당**해야 한다. 그냥 호출만 하면 결과가 사라진다.
 
-### 🔧 문자열 메서드 — 조작 ⭐
+**주요 조작 메서드 요약:**
 
-#### `replace(old, new[, count])`
+| 메서드 | 동작 |
+|--------|------|
+| `replace(old, new)` | old를 new로 모두 교체 |
+| `strip()` | 양쪽 공백(또는 지정 문자) 제거 |
+| `split(sep)` | 구분자 기준으로 **문자열 → 리스트** |
+| `join(iterable)` | 구분자로 **이터러블 → 문자열** |
+| `upper()` / `lower()` | 전체 대문자/소문자 변환 |
+| `swapcase()` | 대소문자 반전 |
 
-```python
-text = "hello world world world"
-
-# 기본: 모든 해당 문자열을 교체
-new_text = text.replace("world", "Python")
-print(new_text)   # "hello Python Python Python"
-print(text)       # "hello world world world" — 원본 유지 (불변)
-
-# count 인자: 교체 횟수 제한
-new_text2 = text.replace("world", "Python", 1)
-print(new_text2)  # "hello Python world world" — 1개만 교체
-```
-
-> ⚠️ **문자열 불변(Immutable)의 핵심**: `replace`는 원본 문자열을 변경하지 않고, 교체된 **새 문자열을 반환**. 반드시 변수에 할당 후 사용.
-
-#### `strip()` / `lstrip()` / `rstrip()`
+### 2-4. split과 join — 알고리즘 필수
 
 ```python
-text = "  hello world  "
-
-print(text.strip())   # "hello world"  — 양쪽 공백 제거
-print(text.lstrip())  # "hello world  " — 왼쪽만 제거
-print(text.rstrip())  # "  hello world" — 오른쪽만 제거
-
-# 지정 문자 제거
-text2 = "...hello..."
-print(text2.strip("."))  # "hello" — 지정 문자 제거
-```
-
-> 💡 강사님: *"웹 서비스 로그인 시 이메일 뒤에 공백 입력해도 로그인 되는 이유가 서버에서 `strip()` 적용하기 때문. 알고리즘 문제 풀 때 코드가 완벽한데 안 풀리면 입력값에 `strip()` 적용해볼 것. 출제자 실수로 공백이 들어간 경우 있음 — 직접 경험."*
-
-#### `split([sep])` ⭐ 알고리즘 필수
-
-```python
-# 공백 기준 분리 (알고리즘 입력값 처리 시 표준 패턴)
+# split: 문자열 → 리스트
 text = "10 20 30 40 50"
-numbers = text.split()      # ['10', '20', '30', '40', '50']
+numbers = text.split()          # ['10', '20', '30', '40', '50']
 
-# 지정 구분자 기준 분리
-csv = "hello,world,python"
-words = csv.split(",")       # ['hello', 'world', 'python']
+# join: 리스트 → 문자열
+words = ["hello", "world"]
+result = "--".join(words)       # 'hello--world'
 ```
 
-> 💡 강사님: *"알고리즘 사이트의 입력값은 전부 문자열(텍스트 파일)로 제공됨. '10 20 30' 같은 문자열을 for문으로 순회하면 '1', '0', ' ', '2'... 처럼 한 글자씩 돌아감. `split()`으로 리스트로 변환 후 처리해야 함 — 알고리즘 매 문제 무조건 사용."*
+> **Tip — 알고리즘 입력 처리 패턴:** 알고리즘 사이트에서 테스트 케이스는 `"10 20 30 40 50"` 같은 **문자열**로 주어진다. 이 문자열을 그대로 순회하면 `'1'`, `'0'`, `' '` … 이렇게 한 글자씩 돌아간다. 반드시 `split()`으로 리스트로 변환한 뒤 사용해야 한다.
 
-#### `join(iterable)` ⭐
+### 2-5. strip — 보이지 않는 공백 제거
 
 ```python
-words = ["hello", "world", "python"]
-
-# 구분자.join(이터러블) — 이터러블을 하나의 문자열로 결합
-result = "-".join(words)     # "hello-world-python"
-result2 = " ".join(words)    # "hello world python"
-result3 = "".join(words)     # "helloworldpython"
+text = "   Hello   "
+text.strip()     # 'Hello'
 ```
 
-#### `split()` + `join()` 콜라보 패턴 ⭐
+실무에서 API 응답이나 파일 데이터에 보이지 않는 공백이 붙어있어 코드가 안 돌아가는 경우가 많다. `strip()`으로 해결된다.
+
+---
+
+## 3. 리스트 메서드
+
+리스트는 **가변(mutable)** 이므로 메서드가 원본을 직접 변경한다.
+
+### 3-1. 추가·삭제
+
+| 메서드 | 동작 | 반환값 |
+|--------|------|--------|
+| `append(x)` | 마지막에 x를 **하나의 항목**으로 추가 | `None` |
+| `extend(iterable)` | 이터러블의 모든 항목을 **개별적으로** 추가 | `None` |
+| `insert(i, x)` | 인덱스 i 위치에 x 삽입 | `None` |
+| `remove(x)` | 값 x를 찾아 첫 번째 항목 삭제 | `None` |
+| `pop(i)` | 인덱스 i 항목 제거 후 **반환** (기본: 마지막) | 제거한 값 |
+| `clear()` | 모든 항목 제거 | `None` |
 
 ```python
-# 문자열에서 특정 단어 교체 패턴 (불변인 문자열을 간접적으로 조작)
-sentence = "안녕 나는 공부하고 싶어"
+my_list = [1, 2, 3]
 
-words = sentence.split()          # ['안녕', '나는', '공부하고', '싶어']
-words = "너는"                  # 리스트는 가변 → 직접 수정 가능[3]
-new_sentence = " ".join(words)    # "안녕 너는 공부하고 싶어"
-
-print(sentence)       # "안녕 나는 공부하고 싶어" — 원본 유지
-print(new_sentence)   # "안녕 너는 공부하고 싶어"
+my_list.append([4, 5])    # [1, 2, 3, [4, 5]]  ← 리스트 자체가 하나의 항목
+my_list = [1, 2, 3]
+my_list.extend([4, 5])    # [1, 2, 3, 4, 5]    ← 펼쳐서 개별 추가
 ```
 
-> 💡 강사님: *"`replace()`로 못 처리하는 상황(토큰 단위로 분리 후 특정 위치만 수정, 불필요한 다중 공백 제거 등)에서 `split()` + `join()` 조합 활용. 실무에서도 굉장히 많이 사용."*
+> **주의 — append는 반환값이 None이다.** 가변이므로 원본을 직접 수정하고, 새 객체를 반환하지 않는다. `new_list = my_list.append(4)` 이렇게 쓰면 `new_list`는 `None`이 된다.
 
-#### 대소문자 변환 메서드
+> **주의 — insert는 자제하자.** 중간에 삽입하면 뒤의 모든 항목을 한 칸씩 밀어야 한다. 데이터가 많으면 성능에 큰 영향을 준다.
+
+### 3-2. 정렬·탐색
+
+| 메서드 | 동작 |
+|--------|------|
+| `sort()` | 원본을 오름차순 정렬 (`reverse=True`로 내림차순) |
+| `reverse()` | 원본의 순서를 뒤집기 |
+| `count(x)` | x가 몇 개 있는지 반환 |
+| `index(x)` | x의 첫 인덱스 반환 (없으면 에러) |
 
 ```python
-text = "hello WORLD"
+nums = [3, 1, 4, 1, 5]
+nums.sort()               # [1, 1, 3, 4, 5]  ← 원본 변경
+nums.sort(reverse=True)   # [5, 4, 3, 1, 1]
+```
 
-print(text.capitalize())  # "Hello world"  — 첫 글자만 대문자, 나머지 소문자
-print(text.title())       # "Hello World"  — 공백 기준 각 단어 첫 글자 대문자
-print(text.upper())       # "HELLO WORLD"  — 전체 대문자
-print(text.lower())       # "hello world"  — 전체 소문자
-print(text.swapcase())    # "HELLO world"  — 대소문자 반전
+> **sort() vs sorted()** — `sort()`는 리스트 전용 메서드로 원본을 변경하고 `None`을 반환한다. `sorted()`는 파이썬 내장 함수로 원본은 그대로 두고 **정렬된 새 리스트를 반환**한다. 원본 보존이 필요하면 `sorted()`를 사용하자.
+
+---
+
+## 4. 가변(Mutable)과 불변(Immutable)
+
+### 4-1. 분류
+
+| 불변 (Immutable) | 가변 (Mutable) |
+|---|---|
+| int, float, str, tuple, bool | list, dict, set |
+
+**불변** — 값을 바꾸면 새로운 객체가 생성되고, 변수는 새 객체의 주소를 참조한다.
+
+**가변** — 같은 객체 내부의 값을 직접 수정할 수 있다. 주소는 변하지 않는다.
+
+### 4-2. 가변 객체의 함정 — 주소 공유
+
+```python
+a = [1, 2, 3]
+b = a            # 주소를 공유 (같은 객체를 가리킴)
+b[0] = 100
+print(a)         # [100, 2, 3]  ← a도 바뀜!
+```
+
+가변 객체를 `b = a`로 할당하면 값이 복사되는 것이 아니라 **같은 주소를 공유**한다. 한쪽을 바꾸면 다른 쪽도 영향을 받는다.
+
+반면 불변 객체(int, str 등)는 같은 값이면 같은 주소를 공유하더라도, 값을 바꾸는 순간 새 객체가 생성되어 다른 변수에 영향을 주지 않는다.
+
+```python
+a = 20
+b = a
+b = 10           # 새 객체 10이 생성되고, b만 변경
+print(a)         # 20  ← 영향 없음
 ```
 
 ---
 
-### 🔧 리스트 메서드 — 추가
+## 5. 얕은 복사와 깊은 복사
 
-#### `append(x)` vs `extend(iterable)` ⭐
+### 5-1. 얕은 복사 (Shallow Copy)
 
-```python
-my_list =[1][2][3]
+주소 공유 문제를 해결하려면 **새 객체를 만들어 값만 복사**해야 한다.
 
-# append — 단일 항목을 마지막에 추가 (어떤 타입이든 가능)
-my_list.append(4)          #[2][3][1]
-my_list.append()     # [1, 2, 3, 4, ] — 리스트 자체가 하나의 항목으로 삽입
-
-my_list2 =[3][1][2]
-# extend — 이터러블의 각 항목을 풀어서 추가 (정수 등 비이터러블 불가)
-my_list2.extend() #  — 개별 항목으로 풀려서 삽입[1][2][3]
-my_list2.extend("안녕")    # [1, 2, 3, 4, 5, 6, '안', '녕'] — 문자열도 한 글자씩 삽입
-```
-
-> ⚠️ **가변(Mutable) 리스트 핵심**: `append()` 반환값 = `None`. 원본을 직접 수정하므로 `new_list = my_list.append(4)` 형태 사용 금지.
-
-#### `insert(idx, x)`
+**방법 3가지:**
 
 ```python
-my_list =[2][3][1]
+a = [1, 2, 3]
 
-# insert — 지정 인덱스 위치에 항목 삽입
-my_list.insert(1, 5)   #  — 인덱스 1 위치에 5 삽입[3][1][2]
-
-# insert(0, x) — 맨 앞에 삽입
-my_list.insert(0, 10)  #[1][2][3]
+b = a[:]          # 1) 전체 슬라이싱
+b = a.copy()      # 2) copy 메서드
+b = list(a)       # 3) list() 형변환
 ```
 
-> ⚠️ 강사님: *"리스트는 연속된 메모리 공간 사용. 중간 `insert` 시 뒤에 있는 모든 요소를 한 칸씩 뒤로 재배치해야 함 → O(n) 비용 발생. 데이터 많을수록 느려짐. 알고리즘에서 성능 고려 필요."*
+슬라이싱은 원본을 건드리지 않고 **새 객체**를 만드는 연산이다. `a[:]`는 처음부터 끝까지 슬라이싱하여 동일한 값을 가진 새 리스트를 생성한다. 불변인 문자열에서도 슬라이싱이 가능한 이유가 바로 이것 — 원본을 수정하는 게 아니라 잘라낸 부분으로 새 객체를 만들기 때문이다.
 
----
-
-### 🔧 리스트 메서드 — 삭제
+### 5-2. 얕은 복사의 한계
 
 ```python
-my_list =[2][3][1]
+a = [1, 2, [3, 4, 5]]
+b = a[:]
 
-# remove(x) — 첫 번째 x 항목 제거 (없으면 ValueError)
-my_list.remove(2)    #  — 첫 번째 2만 제거[3][1][2]
+b[0] = 999
+print(a)         # [1, 2, [3, 4, 5]]   ← 영향 없음 ✓
 
-# pop(idx) — 인덱스 항목 제거 후 반환 (기본값: 마지막 요소)
-val = my_list.pop()      # val = 4, my_list =[1][2][3]
-val2 = my_list.pop(0)    # val2 = 1, my_list =[2][1]
+b[2][0] = 100
+print(a)         # [1, 2, [100, 4, 5]] ← 영향 있음 ✗
 ```
 
----
+얕은 복사는 **가장 바깥 리스트만** 새 객체로 만든다. 내부에 중첩된 리스트(가변 객체)는 여전히 원본과 같은 주소를 공유한다. 그래서 "얕은" 복사라 부른다.
 
-### 🔧 리스트 메서드 — 기타
+### 5-3. 깊은 복사 (Deep Copy)
 
-```python
-my_list =[3][1][2]
-
-# count(x) — x의 등장 횟수 반환
-print(my_list.count(1))   # 2
-print(my_list.count(5))   # 2
-
-# index(x) — x의 첫 번째 인덱스 반환 (없으면 ValueError)
-print(my_list.index(4))   # 2
-
-# sort() — 원본을 오름차순 정렬 (반환값 None)
-my_list.sort()
-print(my_list)   #[1][2][3]
-
-my_list.sort(reverse=True)
-print(my_list)   #[2][3][1]
-```
-
-> 💡 강사님: *"`sort()`와 `sorted()` 혼동 주의. `sort()`는 원본 리스트를 직접 정렬하고 반환값은 `None`. `sorted()`는 정렬된 **새 리스트를 반환**하고 원본 유지. `result = my_list.sort()` 형태 작성 금지."*
-
----
-
-### 🔧 딕셔너리 메서드 ⭐
-
-#### `get(key[, default])`
-
-```python
-person = {"name": "Alice", "age": 25}
-
-# 일반 접근 — 없는 키 접근 시 KeyError 발생
-print(person["name"])    # "Alice"
-# print(person["country"])  → KeyError!
-
-# get() — 없는 키 접근 시 None 반환 (에러 없음)
-print(person.get("name"))      # "Alice"
-print(person.get("country"))   # None (기본값)
-print(person.get("country", "unknown"))  # "unknown" (기본값 지정)
-```
-
-> 💡 강사님: *"실무에서 `get()`은 정말 많이 씀. 키가 있는지 없는지 불확실한 상황에서 안전하게 접근 가능. 없으면 `None` 반환하므로 `if`문으로 처리하기도 용이."*
-
-#### `keys()` / `values()` / `items()`
-
-```python
-person = {"name": "Alice", "age": 25, "country": "Korea"}
-
-# keys() — 키 목록 반환 (dict_keys 객체)
-for key in person.keys():
-    print(key)   # name, age, country
-
-# values() — 값 목록 반환 (dict_values 객체)
-for val in person.values():
-    print(val)   # Alice, 25, Korea
-
-# items() — (키, 값) 튜플 쌍 반환 (dict_items 객체) ⭐ 가장 많이 활용
-for key, value in person.items():
-    print(key, value)   # name Alice / age 25 / country Korea
-```
-
-#### `update(other_dict)` / `pop(key)`
-
-```python
-person = {"name": "Alice", "age": 25}
-
-# update() — 딕셔너리 병합 (기존 키는 덮어쓰기)
-person.update({"age": 30, "country": "Korea"})
-print(person)   # {"name": "Alice", "age": 30, "country": "Korea"}
-
-# pop(key) — 키 제거 후 해당 값 반환
-removed = person.pop("age")
-print(removed)  # 30
-print(person)   # {"name": "Alice", "country": "Korea"}
-```
-
----
-
-### 🔧 세트 메서드
-
-```python
-my_set = {1, 2, 3}
-
-# add(x) — 단일 요소 추가 (중복 시 무시)
-my_set.add(4)    # {1, 2, 3, 4}
-my_set.add(2)    # {1, 2, 3, 4} — 중복 무시
-
-# remove(x) — 요소 제거 (없으면 KeyError)
-my_set.remove(2)  # {1, 3, 4}
-
-# discard(x) — 요소 제거 (없어도 에러 없음)
-my_set.discard(99)  # {1, 3, 4} — 에러 없음
-
-# pop() — 임의 요소 제거 후 반환 (실제로는 해시 테이블 입력 순 반환)
-val = my_set.pop()
-
-# update(iterable) — 이터러블 요소 전체 추가 (extend의 세트 버전)
-my_set.update()
-
-# clear() — 전체 초기화
-my_set.clear()   # set()
-```
-
-#### 집합 연산
-
-```python
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
-
-print(a | b)    # {1, 2, 3, 4, 5, 6} — 합집합
-print(a & b)    # {3, 4}             — 교집합
-print(a - b)    # {1, 2}             — 차집합
-print(a ^ b)    # {1, 2, 5, 6}       — 대칭 차집합
-
-# 메서드 방식
-print(a.union(b))        # 합집합
-print(a.intersection(b)) # 교집합
-print(a.difference(b))   # 차집합
-```
-
-> 💡 강사님: *"세트는 알고리즘에서 속도가 필요할 때 핵심 자료구조. `add()`·`remove()` 연산이 O(1)로 매우 빠름. 리스트는 특정 요소 포함 여부 확인 시 최악 O(n) — 데이터 1000개면 1000번 탐색 필요."*
-
----
-
-### 🔧 해시 테이블 & 해시어블 (Hashable)
-
-#### 핵심 개념
-
-* **해시 테이블**: `dict`·`set`의 내부 저장 구조 — 키를 해시값으로 변환 후 저장
-* **O(1) 탐색**: 해시값으로 직접 접근 → 데이터 크기와 무관하게 빠른 속도
-* **해시어블(Hashable)**: 해시값으로 변환 가능한 객체 = **불변형 타입**
-  * 해시어블: `int`, `float`, `str`, `tuple` (내부에 가변형 미포함 시)
-  * 해시 불가: `list`, `dict`, `set` (가변형)
-* **딕셔너리 키 조건**: 반드시 해시어블한 값만 사용 가능
-
-```python
-# 해시어블 타입은 dict 키로 사용 가능
-d = {
-    "name": "Alice",      # str → 해시어블 ✅
-    1: "one",             # int → 해시어블 ✅
-    (1, 2): "tuple key",  # tuple (불변 요소만) → 해시어블 ✅
-}
-
-# 가변형은 키로 사용 불가
-# d[] = "list key"   → TypeError: unhashable type: 'list'[3][2]
-# d[{1, 2}] = "set key"    → TypeError: unhashable type: 'set'
-
-# 튜플 내부에 가변형 포함 시 해시어블 불가
-# d[(, 3)] = "val"  → TypeError[2][3]
-```
-
-> 💡 강사님: *"세트·딕셔너리가 속도가 빠른 이유는 해시 테이블 구조 때문. 리스트는 1·2·3... 하나하나 비교 → O(n). 세트·딕셔너리는 해시값으로 바로 찾아 들어감 → O(1). 알고리즘에서 탐색 빈도 높으면 세트·딕셔너리로 변환 고려."*
-
----
-
-### 🔧 얕은 복사 vs 깊은 복사
+중첩 객체까지 모두 독립적으로 복사하려면 `copy` 모듈의 `deepcopy`를 사용한다.
 
 ```python
 import copy
+a = [1, 2, [3, 4, 5]]
+b = copy.deepcopy(a)
 
-# 단순 할당 — 참조(Reference)만 복사, 같은 객체 가리킴
-a =[1][3][2]
-b = a          # b는 a와 동일한 메모리 주소 참조
-b = 100
-print(a)       #  — a도 변경됨[1][2]
-
-# ── 얕은 복사 (Shallow Copy) ──────────────────────────
-a = [1, 2, ][1]
-
-b = a.copy()   # 방법 1: .copy() 메서드
-c = a[:]       # 방법 2: 슬라이싱
-
-b = 100
-print(a)       # [1, 2, ] — 1단계 요소는 독립 복사[1]
-
-b = 999  # 중첩 리스트 수정[2]
-print(a)       # [1, 2, ] — 중첩 객체는 여전히 같은 참조! ⚠️
-
-# ── 깊은 복사 (Deep Copy) ────────────────────────────
-a = [1, 2, ][1]
-d = copy.deepcopy(a)  # 중첩 구조까지 완전히 새로운 객체로 복사
-
-d = 999[2]
-print(a)       # [1, 2, ] — 원본 영향 없음 ✅[1]
+b[2][0] = 100
+print(a)         # [1, 2, [3, 4, 5]]  ← 영향 없음 ✓
+print(b)         # [1, 2, [100, 4, 5]]
 ```
 
-> 💡 강사님: *"얕은 복사는 1단계만 독립 복사. 안에 리스트·딕셔너리 같은 가변 객체가 있으면 여전히 같은 주소를 가리킴. 중첩 구조를 완전히 분리하려면 `copy.deepcopy()` 필수."*
+> **깊은 복사가 항상 좋은가?** 그렇지 않다. deepcopy는 내부의 모든 가변 객체를 탐색하며 새 객체를 만들기 때문에 **속도가 느리다**. 중첩된 가변 객체가 없는 단순 리스트라면 얕은 복사로 충분하다.
+
+### 5-4. 정리 비교
+
+| 구분 | 할당 (`b = a`) | 얕은 복사 | 깊은 복사 |
+|---|---|---|---|
+| 바깥 객체 | 공유 | 새로 생성 | 새로 생성 |
+| 내부 중첩 객체 | 공유 | **공유** | 새로 생성 |
+| 사용 시점 | 의도적 공유 | 단순 리스트 | 중첩 가변 객체 있을 때 |
 
 ---
 
-## 🚀 복습 및 AI 인사이트
+## 6. 딕셔너리 메서드
 
-### ✅ 핵심 체크포인트
-* **메서드 호출**: `데이터.메서드()` 형태 — 해당 객체에만 사용 가능
-* **find vs index**: `find` = 없으면 `-1`, `index` = 없으면 `ValueError` — 상황별 선택
-* **불변 문자열 조작**: `replace`·`split` 등은 새 문자열 반환 → 반드시 변수에 할당
-* **append vs extend**: `append` = 항목 그대로 삽입 / `extend` = 이터러블 풀어서 삽입
-* **가변 리스트 메서드 반환값**: `append`·`extend`·`sort` 반환값 = `None` → 재할당 금지
-* **sort vs sorted**: `sort()` = 원본 수정·반환 None / `sorted()` = 새 리스트 반환·원본 유지
-* **dict.get()**: 없는 키 접근 시 KeyError 방지 — 기본값 지정 가능
-* **dict.items()**: `for key, value in dict.items()` 패턴 — 딕셔너리 순회 표준
-* **세트 탐색 O(1)**: 해시 테이블 기반 → 리스트 O(n) 대비 속도 우위
-* **얕은/깊은 복사**: 중첩 구조 완전 분리 필요 시 `copy.deepcopy()` 사용
-* **insert 비용**: 중간 삽입 시 뒤 요소 전체 재배치 → O(n) 비용 주의
-* **strip() 알고리즘 팁**: 완벽한 코드인데 오답 시 입력값에 `strip()` 적용 시도
+딕셔너리는 **키-값 쌍**으로 데이터를 저장하는 비시퀀스 자료형이다. 키는 반드시 불변형(str, int, tuple 등)만 올 수 있고, 값은 아무 타입이나 가능하다.
 
-### 🤖 AI 활용 팁
-* **프롬프트 예시 (split·join 패턴):** `"Python에서 split()과 join()을 함께 사용하는 패턴 3가지를 실제 알고리즘 입력 처리 예시와 함께 보여줘"`
-* **프롬프트 예시 (얕은/깊은 복사 차이):** `"Python 얕은 복사와 깊은 복사의 차이를 중첩 리스트 예시 코드와 메모리 구조 설명으로 보여줘"`
-* **프롬프트 예시 (해시 테이블):** `"Python dict와 list의 탐색 속도 차이를 시간 복잡도(Big-O)와 실제 실행 시간 측정 코드로 비교해줘"`
-* **프롬프트 예시 (dict.get 활용):** `"Python dict.get()을 활용해서 KeyError 없이 딕셔너리를 안전하게 다루는 패턴을 카운팅 문제 예시와 함께 보여줘"`
+### 6-1. 주요 메서드
+
+| 메서드 | 동작 |
+|--------|------|
+| `get(key, default)` | 키에 해당하는 값 반환. 없으면 `None`(또는 default) |
+| `keys()` | 모든 키를 모은 뷰 객체 반환 |
+| `values()` | 모든 값을 모은 뷰 객체 반환 |
+| `items()` | (키, 값) 쌍을 튜플로 모은 뷰 객체 반환 |
+| `pop(key, default)` | 키 제거 후 값 반환 |
+| `setdefault(key, default)` | 키가 있으면 값 반환, 없으면 default를 설정하고 반환 |
+| `update(other_dict)` | 다른 딕셔너리로 덮어쓰기 |
+| `clear()` | 전체 초기화 |
+
+### 6-2. get vs 직접 접근
+
+```python
+person = {"name": "Alice", "age": 25}
+
+# 직접 접근 — 없는 키면 KeyError
+person["country"]          # KeyError!
+
+# get — 없는 키면 None (에러 없음)
+person.get("country")      # None
+person.get("country", "Unknown")  # 'Unknown'
+```
+
+> **언제 어떤 걸 쓸까?** 키가 **반드시 있어야 하는 상황**(예: 회원가입 후 아이디 접근)이라면 직접 접근을 써서 버그를 빨리 발견하자. 키가 **없을 수도 있는 상황**이라면 `get()`을 써서 에러 없이 처리하자.
+
+### 6-3. items() — 키와 값 동시 순회
+
+```python
+person = {"name": "Alice", "age": 25}
+for key, value in person.items():
+    print(key, value)
+# name Alice
+# age 25
+```
+
+`enumerate`가 리스트에서 인덱스+값을 동시에 주는 것처럼, `items()`는 딕셔너리에서 키+값을 동시에 준다. 실무에서 굉장히 많이 쓰인다.
+
+### 6-4. 뷰 객체 주의점 — 자동 반영
+
+```python
+person = {"name": "Alice", "age": 25}
+keys = person.keys()       # 뷰 객체 할당
+person["hello"] = "world"  # 원본에 항목 추가
+print(keys)                # dict_keys(['name', 'age', 'hello'])  ← 자동 반영!
+```
+
+`keys()`, `values()`, `items()`가 반환하는 것은 복사본이 아니라 **뷰(view)** 객체다. 원본 딕셔너리가 변경되면 뷰에도 자동으로 반영된다. 독립적인 리스트가 필요하면 `list(person.keys())`로 변환하자.
+
+### 6-5. defaultdict — 없는 키 접근 문제 해결
+
+딕셔너리에 없는 키에 값을 누적하려면 매번 키 존재 여부를 확인해야 한다.
+
+```python
+# 일반 딕셔너리 — 매번 확인 필요
+dictionary = {}
+name = "재윤"
+if name not in dictionary:
+    dictionary[name] = 0    # 초기화
+dictionary[name] += 1       # 누적
+```
+
+`defaultdict`를 사용하면 이 과정을 생략할 수 있다.
+
+```python
+from collections import defaultdict
+
+# int 기본값(0)으로 설정
+counter = defaultdict(int)
+counter["재윤"] += 1        # 키 없어도 0부터 시작 → 1
+counter["재윤"] += 1        # 2
+
+# list 기본값([])으로 설정
+groups = defaultdict(list)
+groups["팀A"].append("Alice")   # 키 없어도 빈 리스트부터 시작
+```
+
+> **Tip:** `defaultdict`는 시험 범위는 아니지만, 알고리즘과 실무에서 엄청나게 쓰인다. 없는 키 접근 → 기본값 자동 설정이 필요할 때 떠올리자.
+
+---
+
+## 7. 세트 메서드
+
+세트는 **중복 없는 고유 항목**의 정렬되지 않은 컬렉션이다. 집합 이론에서 착안하여 만들어졌다.
+
+### 7-1. 주요 메서드
+
+| 메서드 | 동작 |
+|--------|------|
+| `add(x)` | 항목 추가 (중복이면 무시) |
+| `remove(x)` | 항목 제거 (없으면 **에러**) |
+| `discard(x)` | 항목 제거 (없어도 **에러 없음**) |
+| `pop()` | 임의의 항목 제거 후 반환 |
+| `update(iterable)` | 이터러블의 항목들을 펼쳐서 추가 |
+| `clear()` | 전체 초기화 |
+
+```python
+my_set = {1, 2, 3}
+my_set.add(4)          # {1, 2, 3, 4}
+my_set.add(4)          # {1, 2, 3, 4}  ← 중복이라 무시
+my_set.discard(99)     # 에러 없이 무시
+```
+
+### 7-2. 집합 연산
+
+```python
+set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+
+set1 - set2            # {1, 2}        차집합
+set1 & set2            # {3, 4}        교집합
+set1 | set2            # {1,2,3,4,5,6} 합집합
+```
+
+### 7-3. 세트의 속도 이점
+
+리스트에서 특정 값 존재 여부를 확인하면 처음부터 하나씩 비교해야 하므로 **데이터가 N개면 최대 N번** 탐색한다. 반면 세트는 해시 테이블로 관리되어 **1번**에 찾는다. 속도가 필요한 알고리즘에서 `add`와 `remove`(또는 `discard`)를 자주 활용하게 된다.
+
+---
+
+## 8. 메서드 체이닝
+
+여러 메서드를 점(`.`)으로 연달아 호출하는 방식이다. 앞 메서드의 반환값에 다음 메서드를 연결한다.
+
+```python
+text = "hELLo wORLd"
+result = text.swapcase().replace("l", "z")
+# swapcase() → 'Hello World'
+# replace()  → 'Hezzο World'
+```
+
+단계를 나눠 쓸 필요 없이 한 줄로 순차 처리가 가능하다. 파이썬뿐 아니라 다른 언어에서도 자주 쓰이는 패턴이다.
+
+> **주의 — None을 반환하는 메서드는 체이닝 불가.**
+> `sort()`, `append()` 등 원본을 직접 변경하고 `None`을 반환하는 메서드 뒤에는 다른 메서드를 연결할 수 없다.
+
+```python
+# ✗ 잘못된 체이닝
+result = [3, 1, 2].sort().reverse()   # sort()가 None 반환 → 에러
+
+# ✓ 올바른 방법
+result = sorted([3, 1, 2], reverse=True)  # sorted()는 새 리스트 반환
+```
+
+---
+
+## 9. 해시 테이블
+
+### 9-1. 해시란
+
+**해시 함수**는 임의의 크기를 가진 입력 데이터를 **고정된 크기의 고유한 값(해시 값)** 으로 변환하는 함수다. 일종의 암호화로, 원본으로 역추적하기 어렵다.
+
+```
+입력 "password123"  →  해시 함수  →  "a3f5b7c2d1e8..."  (고정 길이)
+입력 "password124"  →  해시 함수  →  "9k2m4n8p1q3..."  (완전히 다른 값)
+```
+
+좋은 해시 함수의 특징: 입력이 조금만 달라도 출력이 완전히 다르다 (**눈사태 효과**).
+
+### 9-2. 파이썬에서의 해시
+
+```python
+hash(1)          # 1        ← 정수는 자기 자신
+hash(2)          # 2
+hash(-1)         # -2       ← 예외! (-1은 내부적으로 에러 코드와 충돌 방지)
+hash("hello")    # 매번 다름 ← 보안(솔트) 때문에 실행마다 변경
+```
+
+### 9-3. 딕셔너리·세트가 빠른 이유
+
+리스트는 값을 찾을 때 처음부터 하나씩 비교한다 (순차 탐색). 딕셔너리와 세트는 키를 해시 값으로 변환하고, 해시 값을 인덱스처럼 사용하여 **한 번에** 데이터에 접근한다.
+
+예를 들어, 세트에 `1`이 있는지 확인하면 `1`을 해시 값으로 변환 → 해시 테이블에서 해당 위치를 바로 확인 → 즉시 결과를 얻는다.
+
+### 9-4. 해시 충돌
+
+입력 값은 무한하지만 저장 공간(메모리)은 유한하다. 서로 다른 입력이 같은 해시 값을 가질 수 있는데, 이를 **해시 충돌**이라 한다 (비둘기집 원리). 충돌을 해결하는 다양한 기법이 존재하며, 알고리즘 후반부에서 본격적으로 학습한다.
+
+### 9-5. hashable
+
+해시 테이블의 키로 사용되려면 해시 값이 변하지 않아야 한다. 따라서 **불변형만 hashable**하다.
+
+| hashable (키로 사용 가능) | unhashable (키로 사용 불가) |
+|---|---|
+| int, float, str, tuple*, bool | list, dict, set |
+
+*tuple은 내부에 가변 객체(list 등)가 포함되어 있으면 unhashable이 된다.
+
+```python
+# ✓ 가능
+{(1, 2): "좌표"}
+
+# ✗ 불가
+{[1, 2]: "좌표"}       # TypeError: unhashable type: 'list'
+{(1, [2]): "혼합"}     # TypeError: 내부에 list 포함
+```
+
+> **핵심 정리:** 세트와 딕셔너리가 해시를 쓴다 → 해시 덕분에 탐색이 빠르다 → 해시를 쓰려면 키가 불변이어야 한다.
+
+---
+
+## 10. 내장 함수 직접 구현 — 논리적 사고 연습
+
+내장 함수를 직접 구현하면 논리적 사고력이 키워진다. 코딩은 **수단**일 뿐, 논리를 먼저 한글로 정리한 뒤 코드로 옮기자.
+
+### len 구현
+
+```python
+def my_len(items):
+    count = 0
+    for _ in items:      # 요소 하나마다 카운트 증가
+        count += 1
+    return count
+```
+
+### max 구현
+
+```python
+def my_max(items):
+    max_value = items[0]          # 첫 번째 값을 최대값으로 가정
+    for item in items[1:]:        # 두 번째부터 순회
+        if item > max_value:      # 더 큰 값 발견 시
+            max_value = item      # 최대값 갱신
+    return max_value
+```
+
+### sum 구현
+
+```python
+def my_sum(items):
+    total = 0
+    for item in items:
+        total += item             # 누적 합산
+    return total
+```
+
+### index 구현
+
+```python
+def my_index(items, value):
+    for idx, item in enumerate(items):
+        if item == value:
+            return idx            # 찾으면 즉시 반환
+    return -1                     # 못 찾으면 -1
+```
+
+### reverse 구현
+
+```python
+def my_reverse(items):
+    new_list = []
+    for i in range(len(items) - 1, -1, -1):   # 마지막 인덱스 → 0
+        new_list.append(items[i])
+    return new_list
+```
+
+> **강사 강조:** 논리를 종이에 적고 → 코드로 옮기는 습관을 들이자. 이것이 안 되면 내장 함수 사용을 잠시 멈추고 직접 구현 연습을 하자.
+
+---
+
+## 정리
+
+| 구분 | 핵심 포인트 |
+|------|-------------|
+| 메서드 | 객체에 속한 함수, `객체.메서드()` 형태로 호출 |
+| 문자열 | **불변** → 조작 메서드는 새 객체 반환, 반드시 재할당 |
+| 리스트 | **가변** → 메서드가 원본 직접 변경, 반환값 `None` 주의 |
+| 딕셔너리 | 키는 불변형만 가능, `items()`로 키+값 동시 순회 |
+| 세트 | 중복 불가, 해시 기반이라 탐색 속도 1 |
+| 복사 | 할당(주소 공유) → 얕은 복사(바깥만) → 깊은 복사(전부) |
+| 해시 | 고유 값으로 변환 → 딕셔너리/세트가 빠른 이유 → 키는 불변 필수 |
