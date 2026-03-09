@@ -6,7 +6,7 @@
 |------|------|
 | 출처 | SWEA |
 | 핵심 유형 | 스택, 문자열 처리 |
-| 관련 개념 | 03_Stack |
+| 관련 개념 | 03_Stack.md |
 
 ---
 
@@ -41,16 +41,16 @@ for _ in range(10):
         for idx in range(len(array) - 1):
             if array[idx] == array[idx + 1]:
                 array = array[:idx] + array[idx + 2:]
-                break                  # 쌍 제거 후 처음부터 다시 탐색
+                break
         else:
-            break                      # for문에서 break 없이 끝남 → 쌍 없음
+            break
 
     print(f'#{_ + 1} {array}')
 ```
 
-for-else 구문을 활용한다. for문이 break 없이 완주하면 else 블록이 실행되어 while을 탈출한다. 슬라이싱으로 쌍을 제거한 뒤 break로 다시 처음부터 탐색하는 구조다.
+for-else 구문을 활용한다. for문이 break 없이 완주하면 else 블록이 실행되어 while을 탈출한다. idx + 1과 비교하므로 range는 `len(array) - 1`까지만 순회해야 인덱스 에러를 피할 수 있다.
 
-idx + 1과 비교하므로 range는 `len(array) - 1`까지만 순회해야 인덱스 에러를 피할 수 있다.
+---
 
 ## 풀이 2 — 스택
 
@@ -61,18 +61,18 @@ for _ in range(10):
 
     stack = []
     for ch in array:
-        if not stack:                  # 스택이 비어 있으면 바로 삽입
+        if not stack:
             stack.append(ch)
             continue
-        if stack[-1] == ch:            # 마지막 원소와 같으면 pop
+        if stack[-1] == ch:
             stack.pop()
             continue
-        stack.append(ch)               # 다르면 삽입
+        stack.append(ch)
 
     print(f'#{_ + 1} {"".join(stack)}')
 ```
 
-스택의 마지막 원소(`stack[-1]`)와 현재 문자를 비교하는 것이 핵심이다. 같으면 pop으로 제거하고 현재 문자도 넣지 않으면 쌍이 자연스럽게 소거된다. 소거 후 새로 인접하게 되는 쌍도 다음 순회에서 자동으로 처리된다.
+스택의 마지막 원소(`stack[-1]`)와 현재 문자를 비교하는 것이 핵심이다. 같으면 pop으로 제거하고 현재 문자도 넣지 않으면 쌍이 자연스럽게 소거된다.
 
 > **강사님 팁**: 이 문제의 테스트 케이스는 T를 입력받지 않고 10개가 고정으로 주어진다. 습관적으로 `T = int(input())`을 쓰면 입력이 밀려서 틀린다. 문제의 입력 형식을 반드시 확인하라.
 
@@ -82,7 +82,7 @@ for _ in range(10):
 
 ### 스택을 활용한 쌍 소거
 
-인접한 동일 원소를 제거하는 문제에서 스택은 가장 효율적인 도구다. "마지막에 넣은 것과 비교"하는 구조가 스택의 LIFO 특성과 정확히 일치한다. 괄호 검사, 수식 계산 등에서도 같은 원리가 적용된다.
+인접한 동일 원소를 제거하는 문제에서 스택은 가장 효율적인 도구다. "마지막에 넣은 것과 비교"하는 구조가 스택의 LIFO 특성과 정확히 일치한다.
 
 ### for-else 구문
 
