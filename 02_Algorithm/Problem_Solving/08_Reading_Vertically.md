@@ -6,7 +6,7 @@
 |------|------|
 | 출처 | SWEA |
 | 핵심 유형 | 문자열 순회 (열 우선) |
-| 관련 개념 | 01_List_and_Sorting |
+| 관련 개념 | 01_List_and_Sorting.md |
 
 ---
 
@@ -22,6 +22,10 @@
 
 일반적인 2차원 순회는 행 → 열 순서지만, 이 문제는 열 → 행 순서로 순회해야 한다. 바깥 for문에 열(col), 안쪽 for문에 행(row)을 배치하는 것이 포인트다. 접근 전에 해당 단어의 길이와 현재 열 인덱스를 비교하여 인덱스 에러를 방지해야 한다.
 
+순회 순서를 헷갈리는 경우, 결과 문자열에 글자가 추가되는 순서를 먼저 생각하면 도움이 된다. 첫 번째로 추가되는 글자는 모든 단어의 첫 번째 열, 그 다음은 두 번째 열 순서다. 이를 코드로 옮기면 자연스럽게 열이 바깥 for문이 된다.
+
+별도의 2차원 배열 없이 문자열 리스트 그대로 접근한다. `words[row][col]`로 row번째 단어의 col번째 글자에 직접 접근하면 된다.
+
 > **강사님 팁**: 열 인덱스가 해당 단어의 길이보다 작을 때만 접근해야 인덱스 에러가 나지 않는다. 이 조건 하나가 이 문제의 전부다.
 
 ---
@@ -31,26 +35,22 @@
 ```python
 T = int(input())
 for tc in range(1, T + 1):
-    words = [input() for _ in range(5)]  # 5줄 고정 입력
+    words = [input() for _ in range(5)]
 
-    # 최대 길이 구하기
     max_length = 0
     for word in words:
         max_length = max(max_length, len(word))
 
-    # 열 우선 순회
     result = ''
-    for col in range(max_length):        # 열 인덱스 순회
-        for row in range(5):             # 5개 단어 순회
-            if col < len(words[row]):    # 해당 열에 글자가 있을 때만
+    for col in range(max_length):
+        for row in range(5):
+            if col < len(words[row]):
                 result += words[row][col]
 
     print(f'#{tc} {result}')
 ```
 
-바깥 for문이 열(col), 안쪽 for문이 행(row)인 것이 핵심이다. 일반적인 2차원 순회(행 → 열)와 반대 방향이다.
-
-`col < len(words[row])` 조건이 없으면, 짧은 단어에서 존재하지 않는 인덱스에 접근하여 에러가 발생한다. 예를 들어 4글자 단어에 col이 4 이상이면 접근 불가다.
+바깥 for문이 열(col), 안쪽 for문이 행(row)인 것이 핵심이다. `col < len(words[row])` 조건이 없으면 짧은 단어에서 인덱스 에러가 발생한다.
 
 ---
 
