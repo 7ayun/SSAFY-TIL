@@ -18,6 +18,9 @@ SWEA 문제풀이 수업에서 다룬 문제들을 정리한 폴더입니다.
 | 07 | 07_Password.md | 비밀번호 | 스택, 쌍 소거 | 문제풀이2 |
 | 08 | 08_Reading_Vertically.md | 의석이의 세로로 말해요 | 열 우선 순회 | 문제풀이2 |
 | 09 | 09_Honey_Collection.md | 벌꿀채취 | 조합, 완전 탐색 | 문제풀이2 |
+| 10 | 10_Number_Making.md | 숫자 만들기 | DFS 재귀, 연산자 순열 | 문제풀이3 |
+| 11 | 11_Hamburger_Diet.md | 햄버거 다이어트 | 부분집합, 백트래킹 | 문제풀이3 |
+| 12 | 12_Special_Magnet.md | 특이한 자석 | 시뮬레이션, deque | 문제풀이3 |
 
 ---
 
@@ -28,5 +31,7 @@ SWEA 문제풀이 수업에서 다룬 문제들을 정리한 폴더입니다.
 | 1차원 리스트, 정렬 | ../01_List_and_Sorting.md |
 | 2차원 배열, 델타 탐색 | ../02_Matrix.md |
 | 스택 | ../03_Stack.md |
+| 큐, deque | ../04_Queue.md |
 | 그리디 | ../06_Greedy.md |
 | 완전 탐색, 조합 | ../07_Exhaustive_Search.md |
+| 백트래킹, DFS 재귀 | ../10_Backtracking.md |
