@@ -6,7 +6,7 @@
 |------|------|
 | 출처 | SWEA |
 | 핵심 유형 | 그리디 (정렬 + 매칭) |
-| 관련 개념 | 06_Greedy |
+| 관련 개념 | 06_Greedy.md |
 
 ---
 
@@ -34,20 +34,20 @@ for tc in range(1, T + 1):
     N, tower1_h, tower2_h = map(int, input().split())
     weights = list(map(int, input().split()))
 
-    weights.sort(reverse=True)         # 무거운 순으로 내림차순 정렬
+    weights.sort(reverse=True)
 
     total = 0
-    cur1 = 1                           # 타워1의 현재 배치 층
-    cur2 = 1                           # 타워2의 현재 배치 층
+    cur1 = 1
+    cur2 = 1
 
     for i in range(N):
-        if cur1 > tower1_h:            # 타워1이 꽉 찼으면 타워2에
+        if cur1 > tower1_h:
             total += cur2 * weights[i]
             cur2 += 1
-        elif cur2 > tower2_h:          # 타워2가 꽉 찼으면 타워1에
+        elif cur2 > tower2_h:
             total += cur1 * weights[i]
             cur1 += 1
-        elif cur1 <= cur2:             # 더 낮은 층에 배치
+        elif cur1 <= cur2:
             total += cur1 * weights[i]
             cur1 += 1
         else:
@@ -59,6 +59,8 @@ for tc in range(1, T + 1):
 
 한쪽 탑이 꽉 찼는지 먼저 확인하고, 아직 여유가 있으면 현재 층이 더 낮은 쪽에 화물을 배치한다. 배치 후에는 해당 탑의 현재 층을 +1 해준다.
 
+---
+
 ## 풀이 2 — 층수 리스트 매칭 방식
 
 ```python
@@ -67,14 +69,14 @@ for tc in range(1, T + 1):
     N, tower1_h, tower2_h = map(int, input().split())
     weights = list(map(int, input().split()))
 
-    weights.sort(reverse=True)         # 화물: 내림차순
+    weights.sort(reverse=True)
 
-    floors = []                        # 모든 층수를 하나의 리스트로
+    floors = []
     for i in range(1, tower1_h + 1):
         floors.append(i)
     for i in range(1, tower2_h + 1):
         floors.append(i)
-    floors.sort()                      # 층수: 오름차순
+    floors.sort()
 
     total = 0
     for i in range(N):
