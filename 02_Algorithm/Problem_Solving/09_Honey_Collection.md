@@ -6,7 +6,7 @@
 |------|------|
 | 출처 | SWEA |
 | 핵심 유형 | 완전 탐색, 조합 (A형 수준) |
-| 관련 개념 | 07_Exhaustive_Search.md |
+| 관련 개념 | 07_Exhaustive_Search |
 
 ---
 
