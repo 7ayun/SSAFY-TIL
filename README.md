@@ -47,12 +47,21 @@
 - **AI 모델 배포**: 모델 서빙 · 최적화 · 배포 파이프라인
 - **경량화 학습**: 리소스 효율적 학습 · 양자화 · 지식 증류
 
+### 07. Django
+
+- **Django 기초**: MTV 패턴 · 프로젝트·앱 구조 · 개발 서버 · URL 라우팅
+- **템플릿**: DTL · 템플릿 상속 · context 전달 · 필터·태그
+- **Model & ORM**: 모델 정의 · 마이그레이션 · QuerySet · Admin 등록
+- **CRUD**: 데이터 생성·조회·수정·삭제 · redirect · request.method 분기
+- **Form & ModelForm**: forms.py · ModelForm · is_valid() · cleaned_data · validator
+- **Static & Media**: 정적 파일 설정 · 미디어 업로드 · ImageField · FileField
+
 ---
 
 ## 🔧 개발 환경 및 도구
 
 - **Editor**: Visual Studio Code, PyCharm
-- **Language**: Python
+- **Language**: Python, Django
 - **Framework/Lib**: Bootstrap
 - **AI Tooling**: GitHub Copilot, Langflow
 
