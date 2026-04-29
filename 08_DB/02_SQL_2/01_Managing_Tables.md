@@ -1,4 +1,4 @@
-# [DB] Managing Tables - 2026.04.28
+# [DB] Managing Tables
 
 ---
 

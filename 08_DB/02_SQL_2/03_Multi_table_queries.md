@@ -1,4 +1,4 @@
-# [DB] Multi table queries - 2026.04.28
+# [DB] Multi table queries
 
 ---
 
